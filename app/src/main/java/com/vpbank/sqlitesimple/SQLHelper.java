@@ -2,10 +2,13 @@ package com.vpbank.sqlitesimple;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 class SQLHelper extends SQLiteOpenHelper {
+    private static final String TAG = "SQLHelper";
 
     static final String DB_NAME = "Product.db";
     static final String DB_NAME_TABLE = "Product";
@@ -13,6 +16,7 @@ class SQLHelper extends SQLiteOpenHelper {
 
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
+    Cursor cursor;
 
 
     public SQLHelper(Context context) {
@@ -49,8 +53,46 @@ class SQLHelper extends SQLiteOpenHelper {
         closeDB();
     }
 
+    public int deleteNote(int id) {
+        sqLiteDatabase = getWritableDatabase();
+        return Long.valueOf(sqLiteDatabase.delete(DB_NAME_TABLE, " id=?", new String[]{String.valueOf(id)})).intValue();
+    }
+
+    public boolean deleteNoteAll() {
+        sqLiteDatabase = getWritableDatabase();
+        sqLiteDatabase.delete(DB_NAME_TABLE, null, null);
+        closeDB();
+        return true;
+    }
+
+    public void updateProduct(int id) {
+        sqLiteDatabase = getWritableDatabase();
+        contentValues = new ContentValues();
+        contentValues.put("name", "pepsi");
+        contentValues.put("quantity", "30");
+
+        sqLiteDatabase.update(DB_NAME_TABLE, contentValues, "id=?", new String[]{String.valueOf(id)});
+        closeDB();
+    }
+
+    public void getAllProduct() {
+        sqLiteDatabase = getReadableDatabase();
+        cursor = sqLiteDatabase.query(false, DB_NAME_TABLE, null, null, null
+                , null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
+            Log.d(TAG, "getAllProduct: " + "id - " + id + " - name - " + name + " - quantity - " + quantity);
+        }
+        closeDB();
+
+    }
+
     private void closeDB() {
-        sqLiteDatabase.close();
-        contentValues.clear();
+        if (sqLiteDatabase != null) sqLiteDatabase.close();
+        if (contentValues != null) contentValues.clear();
+        if (cursor != null) cursor.close();
     }
 }
