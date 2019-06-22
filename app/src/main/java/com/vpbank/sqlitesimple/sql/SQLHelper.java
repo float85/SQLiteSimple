@@ -57,12 +57,12 @@ class SQLHelper extends SQLiteOpenHelper {
         closeDB();
     }
 
-    public int deleteNote(int id) {
+    public int deleteProduct(String id) {
         sqLiteDatabase = getWritableDatabase();
         return Long.valueOf(sqLiteDatabase.delete(DB_NAME_TABLE, " id=?", new String[]{String.valueOf(id)})).intValue();
     }
 
-    public boolean deleteNoteAll() {
+    public boolean delAllProduct() {
         sqLiteDatabase = getWritableDatabase();
         sqLiteDatabase.delete(DB_NAME_TABLE, null, null);
         closeDB();

@@ -11,8 +11,8 @@ import com.vpbank.sqlitesimple.R;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    Button btnUpdate, btnInsert;
-    EditText etName, etQuantity, etNameUpdate, etQuantityUpdate, etID;
+    Button btnUpdate, btnInsert, btnDelete;
+    EditText etName, etQuantity, etNameUpdate, etQuantityUpdate, etID, etIDDelete;
     SQLHelper sqlHelper;
 
     @Override
@@ -21,14 +21,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sqlHelper = new SQLHelper(getBaseContext());
 
+        //Insert
         btnInsert = findViewById(R.id.btnInsert);
         etName = findViewById(R.id.etName);
         etQuantity = findViewById(R.id.etQuantity);
-
-        btnUpdate = findViewById(R.id.btnUpdate);
-        etID = findViewById(R.id.etIDUpdate);
-        etNameUpdate = findViewById(R.id.etNameUpdate);
-        etQuantityUpdate = findViewById(R.id.etQuantityUpdate);
 
         btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Update
+        btnUpdate = findViewById(R.id.btnUpdate);
+        etID = findViewById(R.id.etIDUpdate);
+        etNameUpdate = findViewById(R.id.etNameUpdate);
+        etQuantityUpdate = findViewById(R.id.etQuantityUpdate);
+
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,5 +51,21 @@ public class MainActivity extends AppCompatActivity {
                 sqlHelper.updateProduct(id, nameUpdate, quantityUpdate);
             }
         });
+
+        //Delete
+        btnDelete = findViewById(R.id.btnDelete);
+        etIDDelete = findViewById(R.id.etIDDelete);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String id = etIDDelete.getText().toString();
+                int iddelete = sqlHelper.deleteProduct(id);
+
+                /*iddelete = 1 => xóa thành công
+                iddelete = 0 => xóa thất bại*/
+                Toast.makeText(getBaseContext(), "Delete : " + iddelete, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }
