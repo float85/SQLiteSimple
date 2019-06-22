@@ -1,4 +1,4 @@
-package com.vpbank.sqlitesimple;
+package com.vpbank.sqlitesimple.sql;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.util.Log;
 
 class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
-
     static final String DB_NAME = "Product.db";
     static final String DB_NAME_TABLE = "Product";
     static final int DB_VERSION = 2;
@@ -37,17 +36,22 @@ class SQLHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == newVersion) {
+        if (oldVersion != newVersion) {
             db.execSQL("drop table if exists " + DB_NAME_TABLE);
             onCreate(db);
         }
     }
 
-    public void insertProduct() {
+    public void insertProduct(String name,String quantity) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
-        contentValues.put("name", "Coca");
-        contentValues.put("quantity", "15");
+        //cách 1
+//        contentValues.put("name", "Coca");
+//        contentValues.put("quantity", "15");
+
+        //cách 2
+        contentValues.put("name",name);
+        contentValues.put("quantity",quantity);
 
         sqLiteDatabase.insert(DB_NAME_TABLE, null, contentValues);
         closeDB();
@@ -65,11 +69,11 @@ class SQLHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public void updateProduct(int id) {
+    public void updateProduct(String id,String name,String quantity) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
-        contentValues.put("name", "pepsi");
-        contentValues.put("quantity", "30");
+        contentValues.put("name", name);
+        contentValues.put("quantity", quantity);
 
         sqLiteDatabase.update(DB_NAME_TABLE, contentValues, "id=?", new String[]{String.valueOf(id)});
         closeDB();
