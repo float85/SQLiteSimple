@@ -1,4 +1,4 @@
-package com.vpbank.sqlitesimple.sql;
+package com.vpbank.sqlitesimple.sql.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vpbank.sqlitesimple.R;
+import com.vpbank.sqlitesimple.sql.Product;
 
 import java.util.List;
 

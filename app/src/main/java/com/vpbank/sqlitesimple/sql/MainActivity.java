@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.vpbank.sqlitesimple.R;
+import com.vpbank.sqlitesimple.sql.adapter.AdapterProduct;
+import com.vpbank.sqlitesimple.sql.adapter.onClickProduct;
 
 import java.util.List;
 

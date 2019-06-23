@@ -1,4 +1,4 @@
-package com.vpbank.sqlitesimple.sql;
+package com.vpbank.sqlitesimple.sql.adapter;
 
 import com.vpbank.sqlitesimple.sql.Product;
 
