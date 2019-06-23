@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
     static final String DB_NAME = "Product.db";
@@ -42,7 +45,7 @@ class SQLHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertProduct(String name,String quantity) {
+    public void insertProduct(String name, String quantity) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
         //cách 1
@@ -50,8 +53,8 @@ class SQLHelper extends SQLiteOpenHelper {
 //        contentValues.put("quantity", "15");
 
         //cách 2
-        contentValues.put("name",name);
-        contentValues.put("quantity",quantity);
+        contentValues.put("name", name);
+        contentValues.put("quantity", quantity);
 
         sqLiteDatabase.insert(DB_NAME_TABLE, null, contentValues);
         closeDB();
@@ -63,13 +66,15 @@ class SQLHelper extends SQLiteOpenHelper {
     }
 
     public boolean delAllProduct() {
+        int result;
         sqLiteDatabase = getWritableDatabase();
-        sqLiteDatabase.delete(DB_NAME_TABLE, null, null);
+        result = sqLiteDatabase.delete(DB_NAME_TABLE, null, null);
         closeDB();
-        return true;
+        if (result == 1) return true;
+        else return false;
     }
 
-    public void updateProduct(String id,String name,String quantity) {
+    public void updateProduct(String id, String name, String quantity) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
         contentValues.put("name", name);
@@ -91,7 +96,26 @@ class SQLHelper extends SQLiteOpenHelper {
             Log.d(TAG, "getAllProduct: " + "id - " + id + " - name - " + name + " - quantity - " + quantity);
         }
         closeDB();
+    }
 
+    public List<Product> getAllProductAdvanced() {
+        List<Product> products = new ArrayList<>();
+        Product product;
+
+        sqLiteDatabase = getReadableDatabase();
+        cursor = sqLiteDatabase.query(false, DB_NAME_TABLE, null, null, null
+                , null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            String id = cursor.getString(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
+            product = new Product(id, name, quantity);
+            products.add(product);
+            Log.d(TAG, "getAllProduct: " + "id - " + id + " - name - " + name + " - quantity - " + quantity);
+        }
+        closeDB();
+        return products;
     }
 
     private void closeDB() {
