@@ -14,7 +14,7 @@ class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
     static final String DB_NAME = "Product.db";
     static final String DB_NAME_TABLE = "Product";
-    static final int DB_VERSION = 2;
+    static final int DB_VERSION = 3;
 
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
@@ -48,11 +48,7 @@ class SQLHelper extends SQLiteOpenHelper {
     public void insertProduct(String name, String quantity) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
-        //cách 1
-//        contentValues.put("name", "Coca");
-//        contentValues.put("quantity", "15");
 
-        //cách 2
         contentValues.put("name", name);
         contentValues.put("quantity", quantity);
 
@@ -62,7 +58,8 @@ class SQLHelper extends SQLiteOpenHelper {
 
     public int deleteProduct(String id) {
         sqLiteDatabase = getWritableDatabase();
-        return Long.valueOf(sqLiteDatabase.delete(DB_NAME_TABLE, " id=?", new String[]{String.valueOf(id)})).intValue();
+        return sqLiteDatabase.delete(DB_NAME_TABLE, " id=?",
+                new String[]{String.valueOf(id)});
     }
 
     public boolean delAllProduct() {
@@ -80,14 +77,16 @@ class SQLHelper extends SQLiteOpenHelper {
         contentValues.put("name", name);
         contentValues.put("quantity", quantity);
 
-        sqLiteDatabase.update(DB_NAME_TABLE, contentValues, "id=?", new String[]{String.valueOf(id)});
+        sqLiteDatabase.update(DB_NAME_TABLE, contentValues, "id=?",
+                new String[]{String.valueOf(id)});
         closeDB();
     }
 
+
     public void getAllProduct() {
         sqLiteDatabase = getReadableDatabase();
-        cursor = sqLiteDatabase.query(false, DB_NAME_TABLE, null, null, null
-                , null, null, null, null);
+        cursor = sqLiteDatabase.query(false, DB_NAME_TABLE, null,
+                null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex("id"));
@@ -112,7 +111,6 @@ class SQLHelper extends SQLiteOpenHelper {
             String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
             product = new Product(id, name, quantity);
             products.add(product);
-            Log.d(TAG, "getAllProduct: " + "id - " + id + " - name - " + name + " - quantity - " + quantity);
         }
         closeDB();
         return products;

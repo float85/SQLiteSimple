@@ -14,12 +14,12 @@
         android:layout_marginTop="@dimen/_25sdp"
         android:orientation="vertical">
 
-        <TextView
+        <com.vpbank.sqlitesimple.sql.adapter.Textviewcustom
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Insert"
-            android:textColor="#222222"
-            android:textSize="@dimen/_25sdp" />
+
+          />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,12 +59,12 @@
         android:layout_marginTop="@dimen/_25sdp"
         android:orientation="vertical">
 
-        <TextView
+        <com.vpbank.sqlitesimple.sql.adapter.Textviewcustom
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update"
             android:textColor="#222222"
-            android:textSize="@dimen/_25sdp" />
+            android:textSize="@dimen/_20sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"

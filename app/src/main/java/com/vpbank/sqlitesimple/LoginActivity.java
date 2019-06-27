@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity {
             etPass.requestFocus();
             return false;
         }
-
         return true;
     }
 }
