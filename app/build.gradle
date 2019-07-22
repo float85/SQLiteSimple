@@ -27,6 +27,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //hỗ trợ xem db của app
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'com.intuit.sdp:sdp-android:1.0.5'
 }

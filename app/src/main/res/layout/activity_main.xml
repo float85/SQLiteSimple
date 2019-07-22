@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/_25sdp"
         android:orientation="vertical">
 
-        <com.vpbank.sqlitesimple.sql.adapter.Textviewcustom
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Insert"
@@ -59,7 +59,7 @@
         android:layout_marginTop="@dimen/_25sdp"
         android:orientation="vertical">
 
-        <com.vpbank.sqlitesimple.sql.adapter.Textviewcustom
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Update"

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String name = etName.getText().toString();
                 String quantity = etQuantity.getText().toString();
+
                 sqlHelper.insertProduct(name, quantity);
                 Toast.makeText(getBaseContext(), "Insert Done", Toast.LENGTH_LONG).show();
             }

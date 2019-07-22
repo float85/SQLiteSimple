@@ -14,7 +14,7 @@ class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
     static final String DB_NAME = "Product.db";
     static final String DB_NAME_TABLE = "Product";
-    static final int DB_VERSION = 3;
+    static final int DB_VERSION = 4;
 
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
@@ -31,7 +31,6 @@ class SQLHelper extends SQLiteOpenHelper {
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 "name Text," +
                 " quantity INTEGER )";
-
 
         //Chạy câu lệnh tạo bảng product
         db.execSQL(queryCreaTable);
