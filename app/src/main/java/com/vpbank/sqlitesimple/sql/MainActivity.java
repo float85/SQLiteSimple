@@ -1,5 +1,7 @@
 package com.vpbank.sqlitesimple.sql;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.vpbank.sqlitesimple.R;
+import com.vpbank.sqlitesimple.VFMSharePreference;
 import com.vpbank.sqlitesimple.sql.adapter.AdapterProduct;
 import com.vpbank.sqlitesimple.sql.adapter.onClickProduct;
 
@@ -110,6 +113,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //cách lưu sharedPreferences
+        SharedPreferences preferences = getSharedPreferences("DevProPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putString("KEY", "ABC");
+        editor.commit();
+
+        //cách gọi
+        SharedPreferences getPreferences = getSharedPreferences("DevProPrefs", Context.MODE_PRIVATE);
+
+        String name = getPreferences.getString("KEY", "");
 
     }
 }
