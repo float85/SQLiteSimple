@@ -5,20 +5,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.Nullable;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
     static final String DB_NAME = "Product.db";
     static final String DB_NAME_TABLE = "Product";
-    static final int DB_VERSION = 2;
+    static final int DB_VERSION = 5;
 
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
     Cursor cursor;
 
-
-    public SQLHelper(Context context) {
+    public SQLHelper( Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -28,7 +31,6 @@ class SQLHelper extends SQLiteOpenHelper {
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 "name Text," +
                 " quantity INTEGER )";
-
 
         //Chạy câu lệnh tạo bảng product
         db.execSQL(queryCreaTable);
@@ -42,47 +44,48 @@ class SQLHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertProduct(String name,String quantity) {
+    public void insertProduct(String name, String quantity) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
-        //cách 1
-//        contentValues.put("name", "Coca");
-//        contentValues.put("quantity", "15");
 
-        //cách 2
-        contentValues.put("name",name);
-        contentValues.put("quantity",quantity);
+        contentValues.put("name", name);
+        contentValues.put("quantity", quantity);
 
         sqLiteDatabase.insert(DB_NAME_TABLE, null, contentValues);
         closeDB();
     }
 
-    public int deleteNote(int id) {
+    public int deleteProduct(String id) {
         sqLiteDatabase = getWritableDatabase();
-        return Long.valueOf(sqLiteDatabase.delete(DB_NAME_TABLE, " id=?", new String[]{String.valueOf(id)})).intValue();
+        return sqLiteDatabase.delete(DB_NAME_TABLE, " id=?",
+                new String[]{String.valueOf(id)});
     }
 
-    public boolean deleteNoteAll() {
+    public boolean delAllProduct() {
+        int result;
         sqLiteDatabase = getWritableDatabase();
-        sqLiteDatabase.delete(DB_NAME_TABLE, null, null);
+        result = sqLiteDatabase.delete(DB_NAME_TABLE, null, null);
         closeDB();
-        return true;
+        if (result == 1) return true;
+        else return false;
     }
 
-    public void updateProduct(String id,String name,String quantity) {
+    public void updateProduct(String id, String name, String quantity) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
         contentValues.put("name", name);
         contentValues.put("quantity", quantity);
 
-        sqLiteDatabase.update(DB_NAME_TABLE, contentValues, "id=?", new String[]{String.valueOf(id)});
+        sqLiteDatabase.update(DB_NAME_TABLE, contentValues, "id=?",
+                new String[]{String.valueOf(id)});
         closeDB();
     }
 
+
     public void getAllProduct() {
         sqLiteDatabase = getReadableDatabase();
-        cursor = sqLiteDatabase.query(false, DB_NAME_TABLE, null, null, null
-                , null, null, null, null);
+        cursor = sqLiteDatabase.query(false, DB_NAME_TABLE, null,
+                null, null, null, null, null, null);
 
         while (cursor.moveToNext()) {
             int id = cursor.getInt(cursor.getColumnIndex("id"));
@@ -91,7 +94,25 @@ class SQLHelper extends SQLiteOpenHelper {
             Log.d(TAG, "getAllProduct: " + "id - " + id + " - name - " + name + " - quantity - " + quantity);
         }
         closeDB();
+    }
 
+    public List<Product> getAllProductAdvanced() {
+        List<Product> products = new ArrayList<>();
+        Product product;
+
+        sqLiteDatabase = getReadableDatabase();
+        cursor = sqLiteDatabase.query(false, DB_NAME_TABLE, null, null, null
+                , null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            String id = cursor.getString(cursor.getColumnIndex("id"));
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            String quantity = cursor.getString(cursor.getColumnIndex("quantity"));
+            product = new Product(id, name, quantity);
+            products.add(product);
+        }
+        closeDB();
+        return products;
     }
 
     private void closeDB() {
